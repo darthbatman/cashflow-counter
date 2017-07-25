@@ -13,13 +13,16 @@ def Draw():
 def Refresher():
     global text
     global cashflow
-    cashflow += 0.0005555555556
+    global calculated_rate
+    cashflow += calculated_rate
     text.configure(text=("$" + str(round(cashflow, 2))))
     root.after(100, Refresher)
 
-def __main__(time_passed=0):
+def __main__(time_passed, rate):
     global root
     global cashflow
+    global calculated_rate
+    calculated_rate = float(rate) / float(60) / float(60) / float(10)
     cashflow = float(time_passed) * (float(20) / float(60))
     root=tk.Tk()
     root.minsize(width=100,height=40)
@@ -30,7 +33,10 @@ def __main__(time_passed=0):
 
 if __name__ == '__main__':
     from sys import argv
+    tp = 0
+    r = 20
     if '-tp' in argv:
-        __main__(argv[argv.index('-tp') + 1])
-    else:
-        __main__()
+        tp = argv[argv.index('-tp') + 1]
+    if '-r' in argv:
+        r = argv[argv.index('-r') + 1]
+    __main__(tp, r)
